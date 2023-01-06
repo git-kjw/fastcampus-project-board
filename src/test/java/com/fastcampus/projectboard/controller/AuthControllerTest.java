@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.TestComponent;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -19,20 +20,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("View 컨트롤러 - 인증")
 @Import(TestSecurityConfig.class)
-@WebMvcTest(Void.class)
-public class AuthControllerTest {
+@WebMvcTest(AuthControllerTest.EmptyController.class)
+class AuthControllerTest {
 
     private final MockMvc mvc;
 
     @MockBean private ArticleService articleService;
     @MockBean private PaginationService paginationService;
 
-    public AuthControllerTest(@Autowired MockMvc mvc) {
+    AuthControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
     @DisplayName("[view][GET] 로그인 페이지 - 정상 호출")
     @Test
-    public void givenNothing_whenTryingToLogIn_thenReturnsLogInView() throws Exception {
+    void givenNothing_whenTryingToLogIn_thenReturnsLogInView() throws Exception {
         // Given
         // When & Then
         mvc.perform(get("/login"))
@@ -41,5 +42,8 @@ public class AuthControllerTest {
         then(articleService).shouldHaveNoInteractions();
         then(paginationService).shouldHaveNoInteractions();
     }
+
+    @TestComponent
+    static class EmptyController{}
 
 }
