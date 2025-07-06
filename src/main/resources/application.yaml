@@ -41,3 +41,6 @@ spring:
 
   thymeleaf3:
     decoupled-logic: true
+
+server:
+  port: 30001
